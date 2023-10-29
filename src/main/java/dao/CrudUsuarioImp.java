@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -11,27 +13,18 @@ import model.TblUsuariocl2;
 public class CrudUsuarioImp implements Iusuario{
 
 	@Override
-	public String ValidarUsuario(TblUsuariocl2 tblusu) {		
+	public boolean ValidarUsuario(String usuario,String password) {		
 		EntityManagerFactory conex=Persistence.createEntityManagerFactory("EXAMENCL2");
 		EntityManager emanager = conex.createEntityManager();		
-		emanager.getTransaction().begin();
-				
+		
 		// APLICAMOS EL JPQL RELACIONADO CON ENTIDADES...
-		Query consulta=emanager.createQuery("SELECT u FROM TblUsuario u where u.usuario=:x and u.password=:y",TblUsuariocl2.class);
+		Query consulta=emanager.createQuery("SELECT u FROM TblUsuariocl2 u where u.usuariocl2=:x and u.passwordcl2=:y",TblUsuariocl2.class);
 		//
-		consulta.setParameter("x", tblusu.getUsuariocl2());
-		consulta.setParameter("y", tblusu.getPasswordcl2());
-		String mensaje="";
-		TblUsuariocl2 u;
-		try{
-			u=(TblUsuariocl2) consulta.getSingleResult();
-			mensaje = "existe";
-		}	catch(Exception ex){
-			u=null;
-			mensaje="no existe";
-		}
+		consulta.setParameter("x", usuario);
+		consulta.setParameter("y", password);
+		List<TblUsuariocl2> confir=consulta.getResultList();
 					
-		return mensaje;
+		return !confir.isEmpty();
 	}
 
 }

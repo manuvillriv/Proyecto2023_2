@@ -29,7 +29,7 @@ public class CrudProductoImp implements Iproducto{
 		EntityManager emanager = conex.createEntityManager();		
 		emanager.getTransaction().begin();		
 		
-		List<TblProductocl2> listado = emanager.createQuery("select e from TblEmpleado e", 
+		List<TblProductocl2> listado = emanager.createQuery("select e from TblProductocl2 e", 
 															TblProductocl2.class).getResultList();
 		emanager.getTransaction().commit();
 		emanager.close();

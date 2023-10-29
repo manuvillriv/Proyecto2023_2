@@ -1,6 +1,8 @@
 package controlador;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +31,7 @@ public class ControladorProducto extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+		request.getRequestDispatcher("/RegistrarProducto.jsp").forward(request, response);
 	}
 
 	/**
@@ -36,34 +39,31 @@ public class ControladorProducto extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//doGet(request, response);
-		//INSTANCIAR LA ENTIDAD...
-		TblProductocl2 tblpro = new TblProductocl2();
-		CrudProductoImp crud = new CrudProductoImp(); 
-				
-				
-				
-		//**************** REGISTRAR *****************
-				
-		/*
-				
-		// AGREGAMOS DATOS NUEVOS PARA EL EMPLEADO
-		tblemp.setNombre("Ronaldo Dashell");
-		tblemp.setApellido("Quispe Mamani");
-		tblemp.setSexo("M");
-		tblemp.setEmail("rolando@hotmail.com");
-		//CONVERTIMOS A FECHA SQL...
-		Date fecha = new Date();
-		Date fechasql = new Date(fecha.getTime());
-				
-		tblemp.setFechanac(fechasql);
-		tblemp.setTel("3814950");
-		tblemp.setDni("92672902");			
+		//doGet(request, response);			
 		
-		//INVOCAMOS AL METODO REGISTRAR...
-		crud.RegistrarEmpleado(tblemp);
+		String nombre=request.getParameter("nombre");
+		Double precio=Double.parseDouble(request.getParameter("precio"));
+		Double precioven=Double.parseDouble(request.getParameter("precioven"));
+		String estado=request.getParameter("estado");
+		String descrip=request.getParameter("descrip");
+		
+		TblProductocl2 tblpro = new TblProductocl2();
+		CrudProductoImp crud = new CrudProductoImp();
+		
+		tblpro.setNombrecl2(nombre);
+		tblpro.setPrecioventacl2(precio);
+		tblpro.setPreciocompcl2(precioven);
+		tblpro.setEstadocl2(estado);
+		tblpro.setDescripcl2(descrip);
 				
-		*/		
-	}
+		crud.RegistrarProducto(tblpro);
+		
+		List<TblProductocl2> listarpro=crud.ListadoProducto();
+		request.setAttribute("listado", listarpro);
+		request.getRequestDispatcher("/RegistrarProducto.jsp").forward(request, response);
+				
+		
+	}	// FIN DEL METODO DOPOST...
+	
 
 }
