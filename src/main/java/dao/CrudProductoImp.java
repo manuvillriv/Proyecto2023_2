@@ -25,8 +25,17 @@ public class CrudProductoImp implements Iproducto{
 
 	@Override
 	public List<TblProductocl2> ListadoProducto() {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManagerFactory conex=Persistence.createEntityManagerFactory("EXAMENCL2");		
+		EntityManager emanager = conex.createEntityManager();		
+		emanager.getTransaction().begin();		
+		
+		List<TblProductocl2> listado = emanager.createQuery("select e from TblEmpleado e", TblProductocl2.class).getResultList();
+		
+		//CONFIRMAMOS
+		emanager.getTransaction().commit();
+		//CERRAMOS...
+		emanager.close();
+				
+		return listado;		
 	}
-
 }
